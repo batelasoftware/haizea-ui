@@ -1,0 +1,101 @@
+/*
+ *https://codepen.io/takaneichinose/pen/QWyXjNP
+ * */
+
+/**
+ *
+ * Menu Section
+ *
+**/
+*{
+	margin:0;
+	padding:0;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	font-family: Helvetica, sans-serif;
+}
+.datafield {
+	width: 1500px;
+	object-fit: contain;
+	margin: 30px auto;
+	background: #fff;
+	font-family:"Open Sans";
+	padding : 10px 10px;
+}
+
+
+table.table td a.edit {
+    color: #357EC7;
+}
+table.table td a.delete {
+    color: #357EC7;
+}
+
+table.table td a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    min-width: 24px;
+}
+
+
+table{
+    table-layout: fixed;
+    width: 300px;
+	padding-left: 2px; 
+	
+}
+
+.button{
+	background-color: #007bff;
+}	
+
+	
+.mbar {
+  padding: 5px;
+  margin: 5px;
+  background: #eee;
+  border: 1px solid #aaa;
+}
+
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+    url(material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.woff) format('woff'),
+    url(material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+table.table tr th{background-color:#edeff1 !important; color:black !important; border: 0px  !important;}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ems>
+<config>
+<debug>true</debug>
+<interval>60</interval>
+</config>
+<mqtt>
+<url>tcp://localhost</url>
+</mqtt>
+<sqlite>
+<file>/tmp/ems.sqlite</file>
+</sqlite>
+<network>
+<meter>BECT-A10TY2-main</meter>
+<maxCurrent>16</maxCurrent>
+<bus>
+<line>
+<id>1</id>
+</line>
+</bus>
+</network>
+<assets><evCharger><name>BECT-A10TY2-752052</name><line>1</line><phase>1</phase><minCurrent>6</minCurrent><maxCurrent>16</maxCurrent><conn-name>we</conn-name></evCharger><evCharger><name>BECT-A10TY2-000000</name><line>1</line><phase>3</phase><minCurrent>16</minCurrent><maxCurrent>e</maxCurrent><conn-name>e</conn-name></evCharger><evCharger><name>BECT-A10TY2-752023</name><line>1</line><phase>2</phase><minCurrent>6</minCurrent><maxCurrent>16</maxCurrent><conn-name>e</conn-name></evCharger></assets>
+</ems>

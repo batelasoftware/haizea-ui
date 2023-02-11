@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<script src="js/jquery.js" type="text/javascript"></script>
+  	<link rel="stylesheet"  href="css/estilos.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+  </head>
+
+  <body>
+    <?php include 'php/loadNewData.php'?>
+    <fieldset class="datafield">
+		<div class="form-group">
+			<button class="btn btn-info" id="dwnBtn" onclick="exportCSV();" style="font-family: Helvetica, sans-serif;">Download Data</button>
+        </div>
+		<div class="form-group">
+			<canvas id="myChart" width="1400px" height="600px"></canvas>
+        </div>
+    </fieldset>
+  </body>
+
+  <script>
+
+     //--------------------Sepup Block--------------------
+     const valueData         = <?php echo json_encode($BX_value);?>;
+     const ts                = <?php echo json_encode($BX_ts);?>;
+     const code              = <?php echo json_encode($BX_code);?>;
+     const codeNames         = <?php echo json_encode($codeNames);?>;
+     const nameSensorString  = <?php echo json_encode($nameSensorQuery);?>;
+
+     if((nameSensorString.includes("_I") || nameSensorString.includes("MAXCURRENT")) && nameSensorString.includes("_V")){
+       var labelValue="Intensity/Voltage";
+     }
+     else if(nameSensorString.includes("_I") || nameSensorString.includes("MAXCURRENT")){
+       var labelValue="Intensity";
+     }
+     else if(nameSensorString.includes("_V")){
+       var labelValue="Voltage";
+     }
+
+	//--------------------UPDATE CHART--------------------
+    //
+	/**
+	 * Exports and triggers download of chart data as CSV file
+	 */
+	function exportCSV() {
+
+		let csvContent = "data:text/csv;charset=utf-8,";
+		dataSetCSV.forEach(function(rowArray) {
+			let row = rowArray.join(",");
+			csvContent += row + "\r\n";
+		});
+		var encodedUri = encodeURI(csvContent);
+		var link = document.createElement("a");
+		var fileName="ems_data_";
+		tsCodeEnd = tsCode.at(-1);
+		fileName=fileName.concat(tsCode[0].substring(0, 4),tsCode[0].substring(5, 7),tsCode[0].substring(8, 10),"_",tsCodeEnd.substring(0, 4),tsCodeEnd.substring(5, 7),tsCodeEnd.substring(8, 10),".csv");
+		link.setAttribute("href", encodedUri);
+		link.setAttribute("download", fileName);
+		document.body.appendChild(link); // Required for FF
+
+		link.click();
+	}
+
+    function getAllIndexes(arr, val) {
+        var indexes = [], i = -1;
+        while ((i = arr.indexOf(val, i+1)) != -1){
+            indexes.push(i);
+        }
+        return indexes;
+    }
+	var dataSetData = [];
+	var dataSetCSV = [];
+
+    const colorArray = ['rgba(139, 0, 139)','rgba(128, 128, 0)','rgba(255,140,0)','rgba(139, 0, 0)','rgba(10,130,180)','rgba(188,143,143','rgba(0128,0,0)','rgba(128,128,128'];
+
+    for(var i = 0; i<codeNames.length; i++){
+        var indexes   = getAllIndexes(code, codeNames[i].split('"')[1]);
+        valueDataCode = valueData.filter((x,i) => indexes.includes(i));
+        tsCode        = ts.filter((x,i) => indexes.includes(i));
+        dataCode =
+        {
+               label: codeNames[i].split('"')[1],
+               data: valueDataCode,
+               borderColor: colorArray[i],
+               backgroundColor: colorArray[i],
+               borderWidth: 3,
+               fill: false,
+			   pointRadius: 0
+        }
+        dataSetData.push(dataCode);
+		dataSetCSV.push([codeNames[i].split('"')[1], ...valueDataCode]);
+    }
+
+    const data = {
+        labels: tsCode,
+        datasets: dataSetData
+    };
+
+    //--------------------Config Block--------------------
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+			scales: {
+			xAxes: [{
+                scaleLabel: {
+					display: true,
+					labelString: 'Time ( UTC )',
+                },
+				ticks:{
+					source: 'labels',
+					maxTicksLimit: 25,
+				}
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: labelValue
+              }
+            }]
+          }
+        }
+     };
+
+     //--------------------Render Block--------------------
+     const myChart = new Chart(
+       document.getElementById('myChart'),
+       config
+     );
+
+     myChart.update();
+  </script>
+  <?php header("location:javascript: //history.go(-1)"); ?>
+</html>

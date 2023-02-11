@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>IBIL Configurator</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <script src="js/script.js" type="text/javascript"></script>
+        <link rel="stylesheet"  href="css/estilos.css"/>
+    </head>
+    <body>
+		<div id="result">	
+		</div>
+		<form  name = "remote" action="xml_process.php" class="register" method="POST" autocomplete="off">
+            <?php
+				// Definimos variables para configurar DynDNS y GPRS
+				$ddpasswd="password";
+				$dduser="user";
+				$ddid="id";
+				$ddserver="server";			
+			?>
+            <h1>Remote configuration</h1>
+			<fieldset class="row1">
+                <legend>DynDNS Configuration</legend>
+					<p>					
+					<label>Server</label>                    
+					<input type="text" required="required" class="medium" name="ddserver" value="<?php echo $ddserver; ?>">
+					<br><br>
+					<p>
+					<label>DynDNS ID</label> 
+					<input type="text" required="required" class="medium" name="ddid" value="<?php echo $ddid; ?>">
+					<br><br>
+					<p>
+					<label>User</label> 
+					<input type="text" required="required" class="medium" name="dduser" value="<?php echo $dduser; ?>">
+					<br><br>
+					<p>
+					<label>Password</label> 
+					<input type="text" required="required" class="medium" name="ddpasswd" value="<?php echo $ddpasswd; ?>">					
+				  <div class="clear"></div>
+            </fieldset>
+  
+    		<br><br>
+    		<br><br>	
+    		<input class="submit" type="submit" value="Confirm &raquo;" />			
+			<div class="clear"></div>
+        </form>
+		<div>
+			<br>
+			<p>Aqui quiero la html</p>
+			<br>
+		</div>
+    </body>
+</html>
+
+
+<!--
+
+php
+phpinfo();			
+
+<script type="text/javascript">
+			$(document).ready(funtction(){
+				$("#servicio1").click(function(e){
+					e.preventDefault();
+					$('#result').load("process_info.php");
+				});
+				$("#servicio2").click(function(){
+					$('#result').load("process_info.php");
+				})
+			});
+</script>
+
+
+
+<script>
+$(document).ready(function(){
+$('.trigger').click(function(e){
+     e.preventDefault();
+     var link = $(this).attr("href");
+     $('#tutcontent').load(link);
+  });
+  });
+  </script>
+-->
