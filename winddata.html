@@ -4,50 +4,147 @@
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   	<script src="js/jquery.js" type="text/javascript"></script>
   	<link rel="stylesheet"  href="css/estilos.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js.map"></script>
+
+    <script type="text/javascript" src="js/jquery.js" ></script>
+    <script type="text/javascript" src="js/script.js" ></script>
+    <script src="js/jquery.datetimepicker.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/chart.js/Chart.js"></script>
+
   </head>
 
   <body>
-    <?php include 'php/data_qry.php'?>
-    <fieldset class="datafield">
-		<div class="form-group">
-			<canvas id="lineChart" width="1400px" height="600px"></canvas>
-        </div>
-    </fieldset>
+     <?php include 'php/data_qry.php'?>
+      <div class="col-md-1000">
+			   <canvas id="lineChart"></canvas>
+         <button class="btn btn-info" id="btnexp">Export Values</button>
+      </div>
   </body>
 
 <script>
-      var ctxL = document.getElementById("lineChart").getContext('2d');
+    plot_data();
+
+    const btnexp  = document.querySelector('#btnexp');
+    btnexp.addEventListener('click',export_data);
+    function transpose(matrix) {
+      return matrix[0].map((col, i) => matrix.map(row => row[i]));
+    }
+
+    function export_data (){
+        console.log("Export Data");
+
+        var bx_values = <?php echo json_encode($BX_values);?>;
+        var bx_dates  = <?php echo json_encode($BX_dates);?>;
+        var haizea_names = <?php echo json_encode($chart_vrb);?>;
+
+        exportCSVData (bx_values,bx_dates,haizea_names);
+        /*
+        for (var i = 0; i < bx_values.length; i++) {
+          if (Math.max(bx_values[i].length) >= max_rows) {
+            max_rows = Math.max(bx_values[i].length);
+          }
+        }
+
+        for (var i = 0; i < bx_values.length; i++) {
+          while (Math.max(bx_values[i].length) < max_rows){
+            bx_values[i].push ("");
+            bx_dates[i].push ("");
+          }
+        }
+        var csv = '';
+        for (var i = 0; i < haizea_names.length; i++) {
+          csv+= "Fechas;" + haizea_names[i] +";";
+        }
+        csv += "\n";
+
+        for (var i = 0; i < bx_values.length; i++) {
+          bx_values[i] = bx_values[i].reverse();
+          bx_dates[i]  = bx_dates[i].reverse();
+        }
+        bx_values = transpose(bx_values);
+        bx_dates= transpose(bx_dates);
+
+        for (var i = 0; i < bx_values.length; i++) {
+          var values = bx_values[i];
+          var dates = bx_dates[i];
+
+          for (var j = 0 ; j < values.length;j++) {
+            csv += dates[j] + ";"+ values[j] +";";
+          }
+          csv += "\n";
+        }
+
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+
+        //provide the name for the CSV file to be downloaded
+        let csvDate = new Date()
+        hiddenElement.download = 'Datos_'+csvDate.toISOString()+'.csv';
+        hiddenElement.click();
+        */
+    }
+    /**
+     data: bx_values[i].map((v, j) => ({ x: bx_dates[i], y: v })),
+    Funcion para plot de datos
+    **/
+    function plot_data () {
+      var ctxL = document.getElementById("lineChart");
       var dataSetData = [];
       const codeDBNames = <?php echo json_encode($chart_vrb);?>;
       const colorArray = ['rgba(139, 0, 139)','rgba(128, 128, 0)','rgba(255,140,0)','rgba(139, 0, 0)','rgba(10,130,180)','rgba(188,143,143','rgba(0128,0,0)','rgba(128,128,128'];
-      var dataValues =  [[65, 59, 80, 81, 56, 55, 40],[75, 49, 90, 84, 57, 34, 45],[45, 29, 60, 21, 46, 15,40]];
+      /*
+      var xValues =  [[65, 59, 80, 81, 56, 55, 40],[75, 49, 90, 84, 57, 34, 45],[45, 29, 60, 21, 46, 15,40]];
+      var yValues =  [1,2, 3, 4, 5, 6, 7];
+      */
       var bx_values = <?php echo json_encode($BX_values);?>;
+      var bx_dates = <?php echo json_encode($BX_dates);?>;
       console.log("hoooollla");
       console.log(bx_values);
+      console.log(bx_dates);
+
       for(var i = 0; i<codeDBNames.length; i++){
           dataCode =
           {
                  label: codeDBNames[i],
-                 data: bx_values[i],
+                 data: bx_values[i].reverse().map((v, j) => ({ x: bx_dates[i].reverse(), y: v })),
                  borderColor: colorArray[i],
                  backgroundColor: colorArray[i],
-                 borderWidth: 3,
+                 borderWidth: 2,
                  fill: false,
-           pointRadius: 0
+                 pointRadius: 2
           }
           dataSetData.push(dataCode);
       }
       const data = {
+          labels: bx_dates[0].reverse(),
           datasets: dataSetData
       };
+
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: data,
         options: {
-          responsive: true
+          scales: {
+            x: {
+              type: 'time',
+              time :{
+                unit:'minute',
+                displayFormats: {
+                  minute: 'DD T'
+                }
+              }
+            }
+          }
         }
       });
-
+    }
 </script>
 </html>

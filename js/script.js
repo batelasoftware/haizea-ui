@@ -8,10 +8,56 @@
  * Copyright 2013, Tech Stream
  * http://techstream.org
  */
+ function exportCSVData (bx_values,bx_dates,haizea_names)
+ {
+   var max_rows  = 0 ;
+   for (var i = 0; i < bx_values.length; i++) {
+     if (Math.max(bx_values[i].length) >= max_rows) {
+       max_rows = Math.max(bx_values[i].length);
+     }
+   }
 
+   for (var i = 0; i < bx_values.length; i++) {
+     while (Math.max(bx_values[i].length) < max_rows){
+       bx_values[i].push ("");
+       bx_dates[i].push ("");
+     }
+   }
+   var csv = '';
+   for (var i = 0; i < haizea_names.length; i++) {
+     csv+= "Fechas;" + haizea_names[i] +";";
+   }
+   csv += "\n";
+
+   for (var i = 0; i < bx_values.length; i++) {
+     bx_values[i] = bx_values[i].reverse();
+     bx_dates[i]  = bx_dates[i].reverse();
+   }
+   bx_values = transpose(bx_values);
+   bx_dates= transpose(bx_dates);
+
+   for (var i = 0; i < bx_values.length; i++) {
+     var values = bx_values[i];
+     var dates = bx_dates[i];
+
+     for (var j = 0 ; j < values.length;j++) {
+       csv += dates[j] + ";"+ values[j] +";";
+     }
+     csv += "\n";
+   }
+
+   var hiddenElement = document.createElement('a');
+   hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+   hiddenElement.target = '_blank';
+
+   //provide the name for the CSV file to be downloaded
+   let csvDate = new Date()
+   hiddenElement.download = 'Datos_'+csvDate.toISOString()+'.csv';
+   hiddenElement.click();
+
+ }
 
  function updateChart(){
-
    if(document.getElementById("start_date").value == "-" ) {
      var ts_end       = Math.round(new Date().getTime() /1000);
      var ts_start     = ts_end -3600;
@@ -77,7 +123,7 @@ function createTableRowEquipos (idx) {
  }
 
 
- function addRowFormSerie(tableID) {
+  function addRowFormSerie(tableID) {
   	var table = document.getElementById(tableID);
   	var rowCount = table.rows.length;
   	if(rowCount < 50){							// limit the user from creating fields more than your limits
@@ -94,9 +140,8 @@ function createTableRowEquipos (idx) {
   		}
   	}else{
   		 alert("Maximum Passenger per ticket is 5.");
-
   	}
- }
+  }
 
  function createTableRowSerie (idx) {
     if (idx == 0) {

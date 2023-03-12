@@ -5,6 +5,7 @@
     $BX_device_items = [];
     $haizea_id = [];
     $BX_values = Array();
+    $BX_dates = Array();
     $log_file = "./haizea-ui.log";
 
     $start   = $_GET['datestart'];
@@ -16,13 +17,14 @@
     function readDeviceValues($haizea_id,$start,$end){
       global $path_db;
       global $BX_values;
+      global $BX_dates;
       global $message;
       global $log_file;
 
       $bd = new SQLite3($path_db);
-      echo $path_db;
       foreach ($haizea_id as $a => $b) {
         $values = Array();
+        $dates = Array();
         if ($start != "" and $end != "" ){
             // $message = 'SELECT windspeed, winddir,date FROM thistoric where haizea_id='.$b.' and date >=\"' .$start. '\" and date <=\"' .$end. '\";' ;
             // error_log($message, 3, $log_file);
@@ -33,16 +35,13 @@
         }
         while ($row = $results->fetchArray()) {
             array_push($values, $row["windspeed"]);
+            array_push($dates, $row["date"]);
         }
         array_push($BX_values, $values);
+        array_push($BX_dates, $dates);
     	}
       $bd->close();
-      var_dump($BX_values);
-
   	}
-
-
-
   	if (file_exists($path_db)) {
   		$bd = new SQLite3($path_db);
       $results = $bd->query('SELECT name,haizea_id FROM tdevices;');
@@ -63,8 +62,5 @@
     else{
         readDeviceValues($haizea_id,"","");
     }
-
-    error_log("hay datos:".$b."\n", 3, $log_file);
-    error_log(print_r($BX_values,true), 3, $log_file);
 
 ?>
