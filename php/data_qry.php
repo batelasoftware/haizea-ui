@@ -2,6 +2,7 @@
   	$ini          = parse_ini_file('app.ini');
   	$path_db      = $ini['full_path_db'];
 
+    $BX_update = "FALSE";
     $BX_device_items = [];
     $haizea_id = [];
     $BX_values = Array();
@@ -28,7 +29,7 @@
         if ($start != "" and $end != "" ){
             // $message = 'SELECT windspeed, winddir,date FROM thistoric where haizea_id='.$b.' and date >=\"' .$start. '\" and date <=\"' .$end. '\";' ;
             // error_log($message, 3, $log_file);
-            $results = $bd->query('SELECT windspeed, winddir,date FROM thistoric where haizea_id='.$b.' and date >="' .$start. '" and date <="' .$end. '";');
+            $results = $bd->query('SELECT windspeed, winddir,date FROM thistoric where haizea_id='.$b.' and date >="' .$start. '" and date <="' .$end. '" order by date desc;');
         }
         else {
           $results = $bd->query('SELECT windspeed, winddir,date FROM thistoric where haizea_id='.$b.' order by date desc limit 100 ;');
@@ -37,8 +38,8 @@
             array_push($values, $row["windspeed"]);
             array_push($dates, $row["date"]);
         }
-        array_push($BX_values, $values);
-        array_push($BX_dates, $dates);
+        array_push($BX_values, array_reverse($values));
+        array_push($BX_dates, array_reverse($dates));
     	}
       $bd->close();
   	}
@@ -58,6 +59,7 @@
 
     if(isset($_GET['datestart']) and isset($_GET['dateend'])) {
       readDeviceValues($haizea_id,$start,$end);
+      $BX_update = "TRUE";
     }
     else{
         readDeviceValues($haizea_id,"","");

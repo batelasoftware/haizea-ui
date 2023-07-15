@@ -8,8 +8,62 @@
  * Copyright 2013, Tech Stream
  * http://techstream.org
  */
+
+ function dateToLocalISO(date) {
+    const off    = date.getTimezoneOffset()
+    const absoff = Math.abs(off)
+    return (new Date(date.getTime() - off*60*1000).toISOString().substr(0,23) +
+            (off > 0 ? '-' : '+') +
+            Math.floor(absoff / 60).toFixed(0).padStart(2,'0') + ':' +
+            (absoff % 60).toString().padStart(2,'0'))
+ }
+
+ function exportCSVDataOtro (chdata)
+ {
+    var max_rows  = 0 ;
+    for (var i = 0; i < chdata.length; i++) {
+      if (Math.max(chdata[i]["data"].length) >= max_rows) {
+         max_rows = Math.max(chdata[i]["data"].length);
+      }
+    }
+
+    var csv="";
+    for (var i   = 0; i < chdata.length; i++) {
+      csv+= "Fechas;" + chdata[i]["label"].toUpperCase()+";";
+    }
+
+    csv += "\n";
+
+    for (var i = 0; i < max_rows; i++) {
+      for (var j = 0; j < chdata.length; j++) {
+        if (i < chdata[j]["data"].length) {
+            csv+= chdata[j]["data"][i].x +";" + chdata[j]["data"][i].y +";";
+        }
+        else {
+          csv+= "" +";" + "b" +";";
+        }
+      }
+      csv += "\n";
+    }
+
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+
+    //provide the name for the CSV file to be downloaded
+    let csvDate = new Date();
+    hiddenElement.download = 'Datos_'+csvDate.toISOString()+'.csv';
+    hiddenElement.click();
+ }
+
+ /**
+ */
  function exportCSVData (bx_values,bx_dates,haizea_names)
  {
+
+   console.log("Function Export Data");
+   console.log (bx_values);
+   console.log (bx_dates);
    var max_rows  = 0 ;
    for (var i = 0; i < bx_values.length; i++) {
      if (Math.max(bx_values[i].length) >= max_rows) {
@@ -51,7 +105,7 @@
    hiddenElement.target = '_blank';
 
    //provide the name for the CSV file to be downloaded
-   let csvDate = new Date()
+   let csvDate = new Date();
    hiddenElement.download = 'Datos_'+csvDate.toISOString()+'.csv';
    hiddenElement.click();
 
