@@ -172,7 +172,13 @@ function createTableRowEquipos (idx) {
              "<a class='delete' title='Delete' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a>" ;
    }
    else {
-     return "<input class='insert-field' style='width:100%' type='text'  name='BX_ast[]' value=''>";
+     if (idx == 3){
+       return "<input class='insert-field' style='width:100%' type='text'  name='BX_device_confs[]' value='0' readonly>";
+     }
+     else {
+        return "<input class='insert-field' style='width:100%' type='text'  name='BX_device_confs[]' value=''>";
+     }
+
    }
  }
 
@@ -203,6 +209,6 @@ function createTableRowEquipos (idx) {
               "<a class='delete' title='Delete' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a>" ;
     }
     else {
-      return "<input class='insert-field' style='width:100%' type='text'  name='BX_ast[]' value=''>";
+      return "<input class='insert-field' style='width:100%' type='text'  name='BX_serial_conf[]' value='0'>";
     }
   }

@@ -1,5 +1,5 @@
 <?php
-session_start();
+	session_start();
 
 if (!isset($_SESSION['user'])) {
 	$_SESSION['user']  = "no_user";
@@ -15,7 +15,6 @@ function checkUser ()
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
     // Validate username
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter a username.";
@@ -26,11 +25,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         	// User::set_name("fff");
         	// <a href="page2.php?varname=<?php echo $var_value ?">Page2</a>
         	$_SESSION['user']  = "ibil";
-        	header("Location: ../home.html");
+        	header("Location: ../index.html");
      		exit();
         }
         else {
-			header("Location: ../index.html");
+					header("Location: ../index.html");
 			exit();
         }
     }
