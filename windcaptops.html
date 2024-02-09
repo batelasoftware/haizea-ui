@@ -6,57 +6,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>HAIZEA - Dashboard</title>
+    <title>AIZEAW - Dashboard</title>
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery.js" ></script>
 </head>
 
-<?php
-	$grados = rand(0, 360);
-  $velocidad = rand(0, 150);
-?>
+<?php include 'php/db.php';?>
+
 <script>
+
+        // Specify the URL  you want to make the GET request to
+        const ip = "<?php echo $BX_alldevicedata[0][1]; ?>";
+        const rmurl1 = "http://" + ip +":19099/api/v1/vaisaladata";
+        //console.log( newurl );
+        const url = "http://localhost:19099/api/v1/vaisaladata";
+
+        function setWindSpeedAndDirection(value) {
+          // Do something with the value
+          console.log(value);
+        }
+
         $(document).ready(function(){
-             var angle =  "<?php echo $grados; ?>";
-             $("#arrow00").css({transform: 'rotate('+angle+'deg)'});
-             $("#arrow01").css({transform: 'rotate('+angle+'deg)'});
-             $("#arrow02").css({transform: 'rotate('+angle+'deg)'});
-          });
+
+            console.log( rmurl1 );
+            fetch(rmurl1)
+            .then(response => {
+            // Check if the request was successful (status code 200-299)
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the response body as JSON
+                return response.json();
+              })
+              .then(data => {
+                if (data.length > 0) {
+                    // The array is not empty
+                    console.log('Data array is not empty.');
+
+                    // You can access the first element as mentioned before
+                    const data00 = data[0];
+                    const angle = data00.direction;
+                    const speed = data00.speed;
+                    const datadate = data00.dataDateStr;
+
+                    $("#arrow01").css({transform: 'rotate('+angle+'deg)'});
+                    setWindSpeedAndDirection (speed);
+                    var arrowImage = (speed >= 50) ? "./img/Flecha2_V_N.bmp" : "./img/Flecha2_R_N.bmp";
+                    document.getElementById("arrow01").src = arrowImage;
+                    document.getElementById("arrow02").src = arrowImage;
+                    vaisala01Data.innerHTML = `<span style="font-size: 12px;">Velocidad:</span> <span style="font-size: 14px;"> ${speed} </span><br>
+                                                <span style="font-size: 12px;">Dirección:</span> <span style="font-size: 14px;"> ${angle}</span><br>
+                                                <span style="font-size: 12px;">Fecha:</span> <span style="font-size: 14px;">${datadate}</span>`;
+
+                }
+                else {
+                  vaisala01Data.innerHTML = `Error in Data`;
+                }
+              })
+              .catch(error => {
+                  vaisala01Data.innerHTML = `NO DATA!!`;
+                  vaisala02Data.innerHTML = `NO DATA!!`;
+                  // Handle any errors that occurred during the fetch
+                  console.error('Fetch error:', error);
+            });
+
+        });
 </script>
 
-
 <body>
-      <!-- Earnings (Monthly) Card Example -->
-      <div class="card col-xl-3 col-md-6 mb-4 text-white card border-left-primary shadow h-50 py-2">
-        <img src="./img/aeropuerto_bilbao.jpeg" class="card-img"/>
-        <div class="card-img-overlay text-center" >
-          <img id = "arrow00" class="rounded" src="./img/small_arrow.jpeg" width="100" height="100" />
-        </div>
-        <div class="card-footer" >
-          <p class="text-xs font-weight-bold text-primary  mb-1"> VELOCIDAD: <?php echo $velocidad; ?>  km/h ** DIRECCIÓN:  <?php echo $grados; ?> </p>
-        </div>
-      </div>
+  <?php
+  for ($i = 1; $i <= 2; $i++) {
 
-      <!-- Earnings (Monthly) Card Example -->
-      <div class="card col-xl-3 col-md-6 mb-4 text-white card border-left-primary shadow h-50 py-2">
-        <img src="./img/aeropuerto_bilbao.jpeg" class="card-img"/>
-        <div class="card-img-overlay text-center" >
-          <img id = "arrow01" class="rounded" src="./img/small_arrow.jpeg" width="100" height="100" />
-        </div>
-        <div class="card-footer" >
-          <p class="text-xs font-weight-bold text-primary  mb-1"> VELOCIDAD: <?php echo $velocidad; ?>  km/h ** DIRECCIÓN:  <?php echo $grados; ?> </p>
-        </div>
-      </div>
+      echo '<div class="card col-lg-12 shadow h-10 py-2  position-relative">';
 
-      <div class="card col-xl-3 col-md-6 mb-4 text-white card border-left-primary shadow h-50 py-2">
-        <img src="./img/aeropuerto_bilbao.jpeg" class="card-img"/>
-        <div class="card-img-overlay text-center" >
-          <img id = "arrow02" class="rounded" src="./img/small_arrow.jpeg" width="100" height="100" />
-        </div>
-        <div class="card-footer" >
-          <p class="text-xs font-weight-bold text-primary  mb-1"> VELOCIDAD: <?php echo $velocidad; ?>  km/h ** DIRECCIÓN:  <?php echo $grados; ?> </p>
-        </div>
-      </div>
-  </div>
+      if ($i == 1) {
+        echo '<h6 class="card-subtitle text-muted">AIZEAW - Oficina</h6>';
+        echo '<img src="./img/AIZEAW_OFICINAS.bmp" class="card-img-top  position-relative"/>';
+      } else {
+          echo '<h6 class="card-subtitle text-muted">AIZEAW - Grua</h6>';
+          echo '<img src="./img/AIZEAW_GRUA.bmp" class="card-img-top  position-relative" width="10" height="160"/>';
+      }
 
+      echo '<div class="card-img-overlay  position-absolute top-10 start-10" >';
+      echo '</div>';
+
+      $red = 165;    // Replace with your desired red component value (0-255)
+      $green = 191;    // Replace with your desired green component value (0-255)
+      $blue = 221;     // Replace with your desired blue component value (0-255)
+
+      echo '<div class="card-footer" style="background-color: rgb(' . $red . ',' . $green . ',' . $blue . '" >';
+      echo '<div class="row">'; // Start a Bootstrap row
+
+      // First Column
+      echo '<div class="col-md-9">'; // Adjust the column size as needed (e.g., col-md-6)
+      echo '<p id="vaisala' . sprintf('%02d', $i) . 'Data" class="text-xs font-weight-bold text-white mb-1">
+                        <span style="font-size: 12px;">Velocidad:</span> <span style="font-size: 14px;"> --- </span><br>
+                        <span style="font-size: 12px;">Dirección:</span> <span style="font-size: 14px;"> --- </span><br>
+                        <span style="font-size: 12px;">Fecha:</span> <span style="font-size: 14px;"> ----</span>
+      </p>';
+      echo '</div>'; // Close the first column
+
+      // Second Column
+      echo '<div class="col-md-3">'; // Adjust the column size as needed (e.g., col-md-6)
+      echo '<img id="arrow'.sprintf('%02d',$i).'" class="position-absolute top-10 start-10" src="./img/Flecha2_R_N.bmp" width="55" height="55" />';
+      echo '</div>'; // Close the second column
+
+      echo '</div>'; // Close the Bootstrap row
+      echo '</div>'; // Close the card-footer
+
+      echo '</div>';
+  }
+  ?>
+
+
+<!--
+
+for ($i = 1; $i <= 2; $i++) {
+    echo '<div class="card col-lg-12 shadow h-10 py-2  position-relative">';
+    echo '<img src="./img/AIZEAW_OFICINAS.png" class="card-img-top  position-relative"/>';
+    echo '<div class="card-img-overlay  position-absolute top-10 start-10" >';
+    echo '<img id="arrow'.sprintf('%02d',$i).'" class="position-absolute top-10 start-10" src="./img/Flecha2_R_N.bmp" width="55" height="55" />';
+    echo '</div>';
+    echo '<div class="card-footer" >';
+    echo '<p id="vaisala' . sprintf('%02d', $i) . 'Data" class="text-s font-weight-bold text-primary mb-1">"---" </p>';
+    echo '</div>';
+    echo '</div>';
+}
+
+
+echo '<img id="arrow'.sprintf('%02d',$i).'" class="position-absolute top-10 start-10" src="./img/Flecha2_R_N.bmp" width="55" height="55" />';
+      <?php
+      for ($i = 1; $i <= 2; $i++) {
+          echo '<div class="card bt-primary col-lg-12 mb-4 text-white border-left-primary shadow h-1 py-2 position-relative">';
+          echo '<div class="position-relative top-50">';
+          echo '<img src="./img/fondo_1.bmp" class="card-img"/>';
+          echo '<div class="card-img-overlay text-center" >';
+          echo '<img id="arrow'.sprintf('%02d',$i).'" class="position-absolute top-50 start-50 translate-middle rounded" src="./img/Flecha2_R_N.bmp" width="50" height="50" />';
+          echo '</div>';
+          echo '</div>';
+          echo '<div class="card-footer" >';
+          echo '<p id="vaisala' . sprintf('%02d', $i) . 'Data" class="text-xs font-weight-bold text-primary mb-1">"---" </p>';
+          echo '</div>';
+          echo '</div>';
+          }
+
+      ?>
+-->
 </body>

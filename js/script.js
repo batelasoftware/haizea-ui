@@ -162,7 +162,7 @@ function addRowFormEquipos(tableID) {
        }
  		}
  	}else{
- 		 alert("Maximum Passenger per ticket is 5.");
+ 		 alert("Maximum Passenge per ticket is 5.");
 
  	}
 }
@@ -174,6 +174,11 @@ function createTableRowEquipos (idx) {
    else {
      if (idx == 3){
        return "<input class='insert-field' style='width:100%' type='text'  name='BX_device_confs[]' value='0' readonly>";
+     }
+     else if (idx == 4){
+       return "<select  name='BX_device_confs[]' style='width: 100%'>"+
+             "<option value=0>False</option>"+
+             "<option value=1>True</option> </select>"
      }
      else {
         return "<input class='insert-field' style='width:100%' type='text'  name='BX_device_confs[]' value=''>";

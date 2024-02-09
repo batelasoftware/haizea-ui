@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script type="text/javascript" src="js/jquery.js" ></script>
+
+    <title>Haizea - Inicio</title>
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery.js" ></script>
+    <script type="text/javascript" src="js/script.js" ></script>
+    <script src="js/jquery.datetimepicker.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="js/chart.js/Chart.min.js"></script>
+
+</head>
+
+<body id="page-top">
+    <?php include 'php/db.php';?>
+    <!-- Page Wrapper -->
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justifyhcontent-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Haizea <sup><?php echo strtoupper($BX_local_name[0]);?></sup></div>
+            </a>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Todas las Haizea</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <?php for ($j=0 ; $j < $device_items ; $j++ ){?>
+                            <a class="collapse-item" href="http://<?php echo $BX_ip[$j];?>:20080/index.html"><?php echo $BX_device_items[$j];?></a>
+                        <?php } ?>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Históricos</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div  id= "dateselector" class="row justify-content-center">
+                      <b class="text-white">Start Date: </b> <input id="start_date" data-provide="datepicker">
+                      <b class="text-white">End Date: </b> <input id="end_date" data-provide="datepicker">
+                      <b></b>
+                      <button class="btn btn-info" id="btn">Plot Values</button>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistoricos"
+                    aria-expanded="true" aria-controls="collapseHistoricos">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Utilidades</span>
+                </a>
+                <div id="collapseHistoricos" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="config.html">Configuración Local</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-blue topbar mb-4 static-top shadow ">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <!-- Topbar Search -->
+                    <h2 class="h1 mb-1 text-center"> Haizea Web </h2>
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Nav Item - Alerts -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell fa-fw"></i>
+                                    <!-- Counter - Alerts -->
+                                    <span class="badge badge-danger badge-counter"><?php echo count($BX_alarmas)."+" ?></span>
+                                </a>
+                                <!-- Dropdown - Alerts -->
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="alertsDropdown">
+                                    <h6 class="dropdown-header">
+                                        Alarmas
+                                    </h6>
+                                    <?php foreach($BX_alarmas  as $a => $b) { ?>
+                                      <a class="dropdown-item d-flex align-items-center" href="#">
+                                          <div class="mr-3">
+                                              <div class="icon-circle bg-primary">
+                                                  <i class="fas fa-file-alt text-white"></i>
+                                              </div>
+                                          </div>
+                                          <div>
+                                              <div class="small text-gray-500"><?php echo $BX_alarmas[$a][2]; ?></div>
+                                              <span class="font-weight-bold"><?php echo $BX_alarmas[$a][0]." -> ".$BX_alarmas[$a][1]." km/h"; ?></span>
+                                          </div>
+                                      </a>
+                                    <?php } ?>
+                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                </div>
+                            </li>
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Haizea</span>
+                                    <img class="img-profile rounded-circle"
+                                        src="img/undraw_profile.svg">
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <!-- /.container-fluid -->
+                <div class="container-fluid">
+                      <div  id= "windcaptops" class="row justify-content-center"></div>
+                    <div class="row">
+                      <div class="col-lg-11">
+                            <div id="lineChartId"></div>
+                      </div>
+                  </div>
+                    <!-- Content Row -->
+                    <!-- Content Row test -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; BATELA SOFTWARE 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Page level custom scripts -->
+<script>
+    function autoRefresh (){
+      $('#windcaptops').load("windcaptops.html");
+    }
+    setInterval ('autoRefresh()',2000)
+    $(document).ready(function(){
+        $('#windcaptops').load("windcaptops.html");
+        $('#lineChartId').load("winddata.html");
+        $('#datetimepicker').datetimepicker();
+      });
+    jQuery('#start_date').datetimepicker({
+    format:'Y-m-d',
+    lang:'es'
+    });
+
+    jQuery('#end_date').datetimepicker({
+    format:'Y-m-d',
+    lang:'es'
+    });
+
+    const btn  = document.querySelector('#btn');
+    btn.addEventListener('click',updateChart);
+</script>
+
+</body>
+</html>

@@ -7,25 +7,26 @@
 
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js.map"></script>
-
+<!--
     <script type="text/javascript" src="js/jquery.js" ></script>
     <script type="text/javascript" src="js/script.js" ></script>
     <script src="js/jquery.datetimepicker.full.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
     <script src="js/sb-admin-2.min.js"></script>
     <script src="js/chart.js/Chart.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+-->
 
   </head>
 
   <body>
      <?php include 'php/data_qry.php'?>
-      <div class="col-md-1000">
-			   <canvas id="lineChart"></canvas>
-         <button class="btn btn-info" id="btnexp">Export Values</button>
-      </div>
+
+      <button class="btn btn-info" id="btnexp">Exportar Valores</button>
+      <label id="livedataid" style="display: none;">"Pulsar 'Inicio' para actualización continua"</label>
+        <div class="col-md-12" >
+  			   <canvas id="lineChart" title="Pulsar 'Inicio' para actualización continua"></canvas>
+        </div>
   </body>
 
 <script>
@@ -48,29 +49,44 @@
     }
 
     for(var i = 0; i<codeDBNames.length; i++){
-        dataCode =
-        {
-               label: codeDBNames[i],
-               data: bx_dates[i].map((v, j) => ({ x: v , y: (bx_values[i][j]) })),
-               borderColor: colorArray[i],
-               backgroundColor: colorArray[i],
-               borderWidth: 2,
-               fill: false,
-               pointRadius: 2
+        if (bx_values[i].length > 0) {
+          dataCode =
+          {
+                 label: codeDBNames[i],
+                 data: bx_dates[i].map((v, j) => ({ x: v , y: (bx_values[i][j]) })),
+                 borderColor: colorArray[i],
+                 backgroundColor: colorArray[i],
+                 borderWidth: 2,
+                 fill: false,
+                 pointRadius: 2
+          }
+          dataSetData.push(dataCode);
         }
-        dataSetData.push(dataCode);
+
     }
+    const allDates = Array.from(new Set(bx_dates.reduce((acc, dates) => acc.concat(dates), [])));
+    allDates.sort((a, b) => new Date(a) - new Date(b));
     const data = {
-        labels: bx_dates[0],
+        labels: allDates,
         datasets: dataSetData
     };
 
     if (bx_update == "TRUE") {
+      var labelElement = document.getElementById("livedataid");
+      labelElement.style.display = "block";
+
       myLineChart.data = [];
       myLineChart.data = data;
-      myLineChart.update();
+      myLineChart.update({
+        duration: 0,
+        easing: 'easeInOutExpo'
+      });
     }
     else {
+      var labelElement = document.getElementById("livedataid");
+    // Make the label visible by setting its display property to "block"
+      // labelElement.style.display = "block";
+
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: data,
@@ -88,6 +104,10 @@
           }
         }
       });
+      myLineChart.update({
+        duration: 0,
+        easing: 'easeInOutExpo'
+      });
     }
 
     function export_data (){
@@ -100,7 +120,6 @@
         exportCSVDataOtro (dataSetData);
         //exportCSVData (bx_values,bx_dates,haizea_names);
     }
-
 
 </script>
 </html>
