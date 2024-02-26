@@ -37,7 +37,10 @@
     for (var i = 0; i < max_rows; i++) {
       for (var j = 0; j < chdata.length; j++) {
         if (i < chdata[j]["data"].length) {
-            csv+= chdata[j]["data"][i].x +";" + chdata[j]["data"][i].y +";";
+            var val_aux = chdata[j]["data"][i].y;
+            val_aux = val_aux.toString().replace(".", ",");;
+            //csv+= chdata[j]["data"][i].x +";" + (chdata[j]["data"][i].y)  +";";
+            csv+= chdata[j]["data"][i].x +";" + val_aux  +";";
         }
         else {
           csv+= "" +";" + "b" +";";
@@ -90,6 +93,11 @@
    bx_values = transpose(bx_values);
    bx_dates= transpose(bx_dates);
 
+   $values_with_comma = array_map(function($bx_values) {
+    return str_replace(".", ",", $bx_values);
+    }, $values);
+
+   bx_values = $values_with_comma;
    for (var i = 0; i < bx_values.length; i++) {
      var values = bx_values[i];
      var dates = bx_dates[i];
