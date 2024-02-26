@@ -46,17 +46,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
 			// if( ($_POST["username"] == "csp") && ($_POST["password"] == "csp")){
 			if ($_POST["password"] == $passwd){
-        	// User::set_name("fff");
-        	// <a href="page2.php?varname=<?php echo $var_value ?">Page2</a>
-        	$_SESSION['user']  = $_POST["username"] ;
-					//$_SERVER['user']  = "csp
-        	header("Location: ../index.html");
-     		exit();
-        }
-        else {
-					header("Location: ../login.html");
-			exit();
-        }
+				// User::set_name("fff");
+				// <a href="page2.php?varname=<?php echo $var_value ?">Page2</a>
+				$_SESSION['user']  = $_POST["username"] ;
+				//$_SERVER['user']  = "csp"
+				header("Location: ../index.html");
+				exit();
+			}
+			else {
+						header("Location: ../login.html");
+				exit();
+			}
     }
 }
 

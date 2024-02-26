@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Rotating Image</title>
+    <style>
+        #container {
+            overflow: hidden; /* Ensure image doesn't overflow container */
+            position: relative; /* Allow absolute positioning of image */
+            background-color: rgb(165,191,221); /* Set background color to red */
+        }
+
+        #rotatedImage {
+            position: absolute; /* Position the image within the container */
+            top: 0%; /* Adjust as needed */
+            left: 0%; /* Adjust as needed */
+            transform-origin: center center; /* Rotate around the center */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container mt-5">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Collapsible Card #1
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                Content for collapsible card #1 goes here.
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Collapsible Card #2
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                Content for collapsible card #2 goes here.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+    <div id="spiderChartContainer">
+        <!-- Chart will be rendered here -->
+    </div>
+    
+   
+    <script>
+        // Get the image element
+        var img = document.getElementById('rotatedImage');
+        // Get the container element
+        var container = document.getElementById('container');
+
+        // Wait for the image to load
+        img.onload = function() {
+            // Set the container size to match the image size
+            container.style.width = img.width + 'px';
+            container.style.height = img.height + 'px';
+        };
+        
+        
+        var chartData = {
+        labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
+        datasets: [{
+            label: 'Data',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            data: [3, 2, 5, 4, 1] // Sample data values
+        }]
+    };
+
+		// Options for the spider chart
+		var chartOptions = {
+			scale: {
+				ticks: {
+					beginAtZero: true
+				}
+			}
+		};
+
+		// Get the canvas element where the chart will be rendered
+		var ctx = document.getElementById('spiderChartContainer').getContext('2d');
+
+		// Create the spider chart
+		var spiderChart = new Chart(ctx, {
+			type: 'radar',
+			data: chartData,
+			options: chartOptions
+		});
+    </script>
+</body>
+</html>

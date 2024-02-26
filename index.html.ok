@@ -12,15 +12,17 @@
       <link href="css/sb-admin-2.min.css" rel="stylesheet">
       <!-- Bootstrap core JavaScript -->
       <script src="js/jquery.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script><script type="text/javascript" src="js/bootstrap.min.js" ></script>
       <script type="text/javascript" src="js/jquery.js" ></script>
       <script type="text/javascript" src="js/script.js" ></script>
       <script src="js/jquery.datetimepicker.full.min.js"></script>
       <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
       <!-- Custom scripts for all pages-->
       <script src="js/sb-admin-2.min.js"></script>
       <!-- Page level plugins -->
       <script src="js/chart.js/Chart.min.js"></script>
+
    </head>
    <body id="page-top">
       <?php include 'php/db.php';?>
@@ -44,7 +46,7 @@
                <li class="nav-item active">
                   <a class="nav-link" href="index.html">
                   <i class="fas fa-fw fa-tachometer-alt"></i>
-                  <span>Inicio</span>
+                  <span onclick="setVariable(true)">Inicio</span>
                   </a>
                </li>
                <!-- Divider -->
@@ -61,9 +63,9 @@
                   <span>Todas las AIZEA</span>
                   </a>
                   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                     <div class="bg-white py-2 collapse-inner rounded">
-                        <?php for ($j=0 ; $j < $device_items ; $j++ ){?>
-                        <a class="collapse-item" href="http://<?php echo $BX_ip[$j];?>:20080/index.html"><?php echo $BX_device_items[$j];?></a>
+                     <div class="bp-white py-2 collapse-inner rounded">
+                        <?php for ($j=0 ; $j < count($BX_alldevicedata) ; $j++ ){?>
+                        <a class="collapse-item" href="http://<?php echo 	$BX_alldevicedata[$j][1];?>:20080/index.html" title="<?php echo 	$BX_alldevicedata[$j][1];?>"><?php echo 	$BX_alldevicedata[$j][0];?></a>
                         <?php } ?>
                      </div>
                   </div>
@@ -81,7 +83,7 @@
                         <b class="text-white">Start Date: </b> <input id="start_date" data-provide="datepicker">
                         <b class="text-white">End Date: </b> <input id="end_date" data-provide="datepicker">
                         <b></b>
-                        <button class="btn btn-info" id="btn">Plot Values</button>
+                        <button class="btn btn-info" id="btn" onclick="setUpdateValue(false)" >Plot Values</button>
                      </div>
                   </div>
                </li>
@@ -156,10 +158,9 @@
                      <div class="topbar-divider d-none d-sm-block"></div>
                      <!-- Nav Item - User Information -->
                      <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="MyuserDropdown role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">AIZEA</span>
-                        <img class="img-profile rounded-circle"
-                           src="img/undraw_profile.svg">
+                        <a class="nav-link dropdown-toggle" href="#" id="MyuserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION["user"]; ?> </span>
+                        <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="MyuserDropdown">
@@ -173,8 +174,71 @@
                <div class="container-fluid ">
                   <div class="row position-relative justify-content-center">
                       <!-- First Column -->
-                      <div id="windcaptops" class="col-lg-3  position-relative justify-content-center"></div>
+                    <div class="panel-group col-lg-3" id="accordionAizeaw">
+                        <div class="card">
+                           <h7 class="card-subtitle mt-1">AIZEAW Oficina</h7>
+                            <div class="card-header text-left" style="background-color: rgb(165,191,221)" id="headingOne">
+                              <div class="row">
+                                  <div class="col-md-8" >
+                                      <button  id = "vaisala01Data"  title="Ver ubicación" style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0" data-toggle="collapse" data-target="#collapseOneA" aria-expanded="false" aria-controls="collapseOne">
+                                        OFICINA
+                                      </button>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <img id="arrow01" class="" src="./img/Flecha2_R_N.bmp" width="55" height="55">
+                                    <label id="vaisala01Dir"  style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0"> XXX </label>
+                                  </div>
+                              </div>
 
+                            </div>
+                            <div id="collapseOneA" class="collapse" aria-labelledby="headingOne" aria-expanded="true" data-parent="#accordionAizeaw">
+                              <div class="card-body">
+                                <img src="./img/AIZEAW_OFICINAS_COMPAS.png" class="card-img-top  position-relative"/>'
+                              </div>
+                            </div>
+                            <div id="vaisala01Footer" class="card-footer text-muted">
+                              <div class="row">
+                                  <div id="vaisala01FooterC1" class="col-md-4" style="line-height:80%">
+                                  </div>
+                                  <div id="vaisala01FooterC2" class="col-md-4" style="line-height:80%">
+                                  </div>
+                                  <div id="vaisala01FooterC3" class="col-md-4" style="line-height:80%">
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h7 class="card-subtitle mt-1">AIZEAW Portainer 08</h7>
+                            <div class="card-header" style="background-color: rgb(165,191,221)" id="headingTwo">
+                              <div class="row">
+                                  <div class="col-md-8" >
+                                      <button  id = "vaisala02Data"  title="Ver ubicación" style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0" data-toggle="collapse" data-target="#collapseTwoA" aria-expanded="false" aria-controls="collapseTwo">
+                                        PORTAINER 08
+                                      </button>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <!--img id="arrow01" class="" src="./img/Flecha2_R_N.bmp" width="55" height="55" /-->
+                                    <label id="vaisala02Dir"  style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0"> XXX </label>
+                                  </div>
+                              </div>
+                            </div>
+                            <div id="collapseTwoA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionAizeaw">
+                              <div class="card-body mb-0">
+                                    <img src="./img/AIZEAW_GRUAP08_COMPAS.png" class="card-img-top  position-relative"/>'
+                              </div>
+                            </div>
+                            <div id="vaisala02Footer" class="card-footer text-muted">
+                              <div class="row">
+                                  <div id="vaisala02FooterC1" class="col-md-4" style="line-height:80%">
+                                  </div>
+                                  <div id="vaisala02FooterC2" class="col-md-4" style="line-height:80%">
+                                  </div>
+                                  <div id="vaisala02FooterC3" class="col-md-4" style="line-height:80%">
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
                       <!-- Second Column -->
                       <div class="col-lg-9">
                           <div id="lineChartId"></div>
@@ -198,19 +262,26 @@
       </a>
       <!-- Page level custom scripts -->
       <script>
-         function autoRefresh (){
-           $('#windcaptops').load("windcaptops.html");
-         }
+         // var enableUpdate ;
+         // function autoRefresh (){
+         //   if (enableUpdate == true){
+         //      $('#windcaptops').load("windcaptops.html");
+         //   }
+         //
+         // }
          function autoChartRefresh (){
-           $('#lineChartId').load("winddata.html");
+           if (enableUpdate == true){
+              $('#lineChartId').load("winddata.html");
+            }
          }
-         setInterval ('autoRefresh()',2000);
+         //setInterval ('autoRefresh()',2000);
          setInterval ('autoChartRefresh()',7000);
 
          $(document).ready(function(){
              $('#windcaptops').load("windcaptops.html");
              $('#lineChartId').load("winddata.html");
              $('#datetimepicker').datetimepicker();
+             enableUpdate = true ;
            });
          jQuery('#start_date').datetimepicker({
          format:'Y-m-d',
@@ -224,6 +295,129 @@
 
          const btn  = document.querySelector('#btn');
          btn.addEventListener('click',updateChart);
+
+         function getWindDirectionLabel(degrees) {
+            // Ensure degrees are within the range [0, 360)
+            degrees = (degrees % 360 + 360) % 360;
+
+            // Define wind directions and their corresponding labels
+            // const directions = [
+            //     "N", "NNE", "NE", "ENE",
+            //     "E", "ESE", "SE", "SSE",
+            //     "S", "SSW", "SW", "WSW",
+            //     "W", "WNW", "NW", "NNW"
+            // ];
+
+            const directions = [
+                "N", "NNE", "NE", "ENE",
+                "E", "ESE", "SE", "SSE",
+                "S", "SSO", "SO", "OSO",
+                "O", "ONO", "NO", "NNO"
+            ];
+            const directionsText = [
+                "Norte", "Nor-Noreste", "Noreste", "Este-Noreste",
+                "Este", "Este-Sureste", "Sureste", "Sur-Sureste",
+                "Sur", "Sur-Suroeste", "Suroeste", "Oeste-Suroeste",
+                "Oeste", "Oeste-Noroeste", "Noroeste", "Nor-Noroeste"
+            ];
+            // Calculate the index based on the wind direction
+            const index = Math.round(degrees / 22.5) % 16;
+
+            // Return the corresponding wind label
+            return [directions[index],directionsText[index]];
+          }
+
+;
+          function fetchDataAndDisplay(rmurl1,vid) {
+            //const rmurl1 = 'http://62.99.51.59:19099/api/v1/vaisaladata'; // Replace with your actual API URL
+            var weatherData = [
+                { vid: 1, element: vaisala01Dir,data: vaisala01Data, footer1:vaisala01FooterC1,footer2:vaisala01FooterC2,footer3:vaisala01FooterC3 },
+                { vid: 2, element: vaisala02Dir,data: vaisala02Data, footer1:vaisala02FooterC1,footer2:vaisala02FooterC2,footer3:vaisala02FooterC3 },
+                // Add more objects as needed
+            ];
+            var vdata = weatherData[vid-1];
+
+
+
+            fetch(rmurl1)
+              .then(response => {
+                // Check if the request was successful (status code 200-299)
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the response body as JSON
+                return response.json();
+              })
+              .then(data => {
+
+                if (data.length > 0) {
+                  // The array is not empty
+                  console.log('Data array is not empty.');
+                  // You can access the first element as mentioned before
+                  const data00 = data[0];
+                  const angle = data00.direction;
+                  const speed = data00.speed;
+                  const datadate = data00.dataDateStr;
+
+                  // $("#arrow01").css({ transform: 'rotate(' + angle + 'deg)' })
+                  // var arrowImage = speed >= 50 ? './img/Flecha2_V_N.bmp' : './img/Flecha2_R_N.bmp';
+                  const [worig,worigtext] = getWindDirectionLabel(angle);
+
+                  vdata.element.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${worig}</span> <br>
+                                            <span style="font-size: 10px;">${worigtext}</span>`;
+                  vdata.data.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${speed} Km/h </span><br>
+                                            <span style="font-size: 14px;">${datadate}</span>`;
+                  if (vid == 1) {
+                    vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HOficina; ?> </span> <br>
+                                                  <span style="font-size: 12px;"> <?php echo $Max06HOficinaDate; ?></span>`;
+                    vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HOficina; ?> </span> <br>
+                                                 <span style="font-size: 12px;"> <?php echo $Max12HOficinaDate; ?> </span>`;
+                    vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HOficina; ?> </span> <br>
+                                                   <span style="font-size: 12px;"> <?php echo $Max24HOficinaDate; ?> </span>`;
+                  }
+                  else{
+                    vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HGrua; ?> </span> <br>
+                                                  <span style="font-size: 12px;"> <?php echo $Max06HGruaDate; ?></span>`;
+                    vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HGrua; ?> </span> <br>
+                                                 <span style="font-size: 12px;"> <?php echo $Max12HGruaDate; ?> </span>`;
+                    vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HGrua; ?> </span> <br>
+                                                   <span style="font-size: 12px;"> <?php echo $Max24HGruaDate; ?> </span>`;
+                  }
+
+
+                } else {
+                  vdata.data.innerHTML = `Error in Data`;
+                }
+              })
+              .catch(error => {
+                vdata.data.innerHTML = `NO DATA!!`;
+                // vaisala02Data.innerHTML = `NO DATA!!`;
+                // Handle any errors that occurred during the fetch
+                console.error('Fetch error:', error);
+              });
+        }
+
+        function setUpdateValue(value)
+        {
+            enableUpdate = value;
+            console.log ("Update value set to: " + enableUpdate.toString());
+        }
+
+        function autoVaisalaDataRefresh (){
+          var ip = "<?php echo $BX_alldevicedata[0][1]; ?>";
+          const aizeaw01grua = "http://" + ip +":19099/api/v1/vaisaladata";
+          console.log ("URL1:" + aizeaw01grua);
+          fetchDataAndDisplay(aizeaw01grua,1);
+
+          ip = "<?php echo $BX_alldevicedata[1][1]; ?>";
+          const aizeaw02grua = "http://" + ip +":19099/api/v1/vaisaladata";
+          console.log ("URL1:" + aizeaw02grua);
+          fetchDataAndDisplay(aizeaw02grua,2);
+          //const url = "http://localhost:19099/api/v1/vaisaladata";
+          //fetchDataAndDisplay('http://62.99.51.59:19099/api/v1/vaisaladata');
+        }
+        setInterval ('autoVaisalaDataRefresh()',2000);
+
       </script>
    </body>
 </html>

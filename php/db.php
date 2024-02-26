@@ -347,7 +347,7 @@
 	$BX_alldevicedata = readAllDeviceData($path_db);
 	$device_items = count($BX_device_items);
 
-  $device_max_values = readMaxValues($path_db,6);
+	$device_max_values = readMaxValues($path_db,6);
 	$Max06HOficina=$device_max_values["Oficina"][0];
 	$Max06HOficinaDate=$device_max_values["Oficina"][1];
 	$Max06HGrua=$device_max_values["Portainer08"][0];

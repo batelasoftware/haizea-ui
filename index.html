@@ -18,10 +18,12 @@
       <script src="js/jquery.datetimepicker.full.min.js"></script>
       <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
       <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="css/estilos.css">
       <!-- Custom scripts for all pages-->
       <script src="js/sb-admin-2.min.js"></script>
       <!-- Page level plugins -->
       <script src="js/chart.js/Chart.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
    </head>
    <body id="page-top">
@@ -172,7 +174,7 @@
                   </ul>
                </nav> <!-- Topbar Navbar -->
                <div class="container-fluid ">
-                  <div class="row position-relative justify-content-center">
+                  <div class="row position-relative ">
                       <!-- First Column -->
                     <div class="panel-group col-lg-3" id="accordionAizeaw">
                         <div class="card">
@@ -180,20 +182,20 @@
                             <div class="card-header text-left" style="background-color: rgb(165,191,221)" id="headingOne">
                               <div class="row">
                                   <div class="col-md-8" >
-                                      <button  id = "vaisala01Data"  title="Ver ubicación" style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0" data-toggle="collapse" data-target="#collapseOneA" aria-expanded="false" aria-controls="collapseOne">
+                                      <button  id = "vaisala01Data"  title="Ver ubicación" style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0" data-toggle="collapse" data-target="#collapseOneA" aria-expanded="true" aria-controls="collapseOne">
                                         OFICINA
                                       </button>
                                   </div>
                                   <div class="col-md-4">
-                                    <!--img id="arrow01" class="" src="./img/Flecha2_R_N.bmp" width="55" height="55" /-->
                                     <label id="vaisala01Dir"  style="color: #000000;line-height:80%" class="btn btn-link text-center mt-0"> XXX </label>
                                   </div>
                               </div>
 
                             </div>
-                            <div id="collapseOneA" class="collapse" aria-labelledby="headingOne" data-parent="#accordionAizeaw">
-                              <div class="card-body">
-                                <img src="./img/AIZEAW_OFICINAS_COMPAS.png" class="card-img-top  position-relative"/>'
+                            <div id="collapseOneA" class="collapse show" aria-labelledby="headingOne" aria-expanded="true" data-parent="#accordionAizeaw">
+                              <div class="card-body position-relative">
+                                <img src="./img/AIZEAW_OFICINAS.bmp" class="card-img-top" style="z-index: 1;"/>
+								<img id="arrowdir1" src="./img/Flecha2_V_N.bmp" class="position-absolute top-0 start-0" width="85" height="85" style="z-index: 2; left: 33%; top: 23% ;"/>
                               </div>
                             </div>
                             <div id="vaisala01Footer" class="card-footer text-muted">
@@ -223,8 +225,10 @@
                               </div>
                             </div>
                             <div id="collapseTwoA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionAizeaw">
-                              <div class="card-body mb-0">
-                                    <img src="./img/AIZEAW_GRUAP08_COMPAS.png" class="card-img-top  position-relative"/>'
+                          
+                              <div class="card-body position-relative">
+                                <img src="../img/AIZEAW_GRUAP08.bmp" class="card-img-top" style="z-index: 1;"/>
+								<img id="arrowdir2" src="./img/Flecha2_V_N.bmp" class="position-absolute top-0 start-0" width="85" height="85" style="z-index: 2; left: 33%; top: 23%;"/>
                               </div>
                             </div>
                             <div id="vaisala02Footer" class="card-footer text-muted">
@@ -240,15 +244,31 @@
                         </div>
                       </div>
                       <!-- Second Column -->
-                      <div class="col-lg-9">
-                          <div id="lineChartId"></div>
+						<div class="col-lg-9">
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tiempo Real</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Estadisticos</a>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+								<div id="lineChartId"></div>
+								<div id="loader" class="loader"></div>
+							</div>
+							<div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+							    <div id="estadisticos"></div>
+							</div>
+						</div>  
                       </div>
                   </div>
                </div>
             </div> <!-- End of Main Content -->
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
-               <div class="container my-auto">
+               <div class="container">
                   <div class="copyright text-center my-auto">
                      <span>Copyright &copy; BATELA SOFTWARE 2023</span>
                   </div>
@@ -272,22 +292,26 @@
          function autoChartRefresh (){
            if (enableUpdate == true){
               $('#lineChartId').load("winddata.html");
+              $('#estadisticos').load("estadisticos_radar.html");
             }
          }
          //setInterval ('autoRefresh()',2000);
          setInterval ('autoChartRefresh()',7000);
-
-         $(document).ready(function(){
-             $('#windcaptops').load("windcaptops.html");
+		
+        $(document).ready(function()
+        {
              $('#lineChartId').load("winddata.html");
-             $('#datetimepicker').datetimepicker();
+             $('#windcaptops').load("windcaptops.html");
+             $('#estadisticos').load("estadisticos_radar.html");
+             $('#datetimepicker').datetimepicker();    
              enableUpdate = true ;
-           });
+         });
+           
          jQuery('#start_date').datetimepicker({
          format:'Y-m-d',
          lang:'es'
-
-         });
+		 });
+         
          jQuery('#end_date').datetimepicker({
          format:'Y-m-d',
          lang:'es'
@@ -326,19 +350,16 @@
             // Return the corresponding wind label
             return [directions[index],directionsText[index]];
           }
-
-;
-          function fetchDataAndDisplay(rmurl1,vid) {
+          
+          function fetchDataAndDisplay(rmurl1,vid,haizea_name) {
             //const rmurl1 = 'http://62.99.51.59:19099/api/v1/vaisaladata'; // Replace with your actual API URL
             var weatherData = [
                 { vid: 1, element: vaisala01Dir,data: vaisala01Data, footer1:vaisala01FooterC1,footer2:vaisala01FooterC2,footer3:vaisala01FooterC3 },
                 { vid: 2, element: vaisala02Dir,data: vaisala02Data, footer1:vaisala02FooterC1,footer2:vaisala02FooterC2,footer3:vaisala02FooterC3 },
                 // Add more objects as needed
             ];
-            var vdata = weatherData[vid-1];
-
-
-
+            //var vdata = weatherData[vid-1];
+			
             fetch(rmurl1)
               .then(response => {
                 // Check if the request was successful (status code 200-299)
@@ -351,39 +372,69 @@
               .then(data => {
 
                 if (data.length > 0) {
-                  // The array is not empty
-                  console.log('Data array is not empty.');
-                  // You can access the first element as mentioned before
-                  const data00 = data[0];
-                  const angle = data00.direction;
-                  const speed = data00.speed;
-                  const datadate = data00.dataDateStr;
-
-                  // $("#arrow01").css({ transform: 'rotate(' + angle + 'deg)' })
-                  // var arrowImage = speed >= 50 ? './img/Flecha2_V_N.bmp' : './img/Flecha2_R_N.bmp';
-                  const [worig,worigtext] = getWindDirectionLabel(angle);
-
-                  vdata.element.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${worig}</span> <br>
-                                            <span style="font-size: 10px;">${worigtext}</span>`;
-                  vdata.data.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${speed} Km/h </span><br>
-                                            <span style="font-size: 14px;">${datadate}</span>`;
-                  if (vid == 1) {
-                    vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HOficina; ?> </span> <br>
-                                                  <span style="font-size: 12px;"> <?php echo $Max06HOficinaDate; ?></span>`;
-                    vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HOficina; ?> </span> <br>
-                                                 <span style="font-size: 12px;"> <?php echo $Max12HOficinaDate; ?> </span>`;
-                    vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HOficina; ?> </span> <br>
-                                                   <span style="font-size: 12px;"> <?php echo $Max24HOficinaDate; ?> </span>`;
+					  // The array is not empty
+					  console.log('Data array is not empty.');
+					  // You can access the first element as mentioned before
+					  const data00 = data[0];
+					  var angle = data00.direction;
+					  const speed = data00.speed;
+					  const datadate = data00.dataDateStr;
+					  
+					  var arrowImage =	'./img/Flecha_V_N.bmp';
+					  if (speed >= 80){
+						  arrowImage =	'./img/Flecha_R_N.bmp';
+					  }	
+					  else if (speed >= 50) {
+						  arrowImage =	'./img/Flecha_A_N.bmp';
+					  }
+					  const [worig,worigtext] = getWindDirectionLabel(angle);
+					  angle = angle + 180;	
+					  
+					  if (haizea_name == "Oficina") {
+						let vdata = weatherData[0];
+			
+						console.log ("Entramos en oficina");
+						$("#arrowdir1").css({ transform: 'rotate(' + angle + 'deg)' });
+						
+						var imgElement = document.getElementById('arrowdir1');
+						imgElement.src = arrowImage ; 
+						
+						var newRotationAngle = angle + 'deg';
+						imgElement.style.transform = 'rotate(' + newRotationAngle + ')';
+	   
+						vdata.element.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${worig}</span> <br>
+												<span style="font-size: 10px;">${worigtext}</span>`;
+						vdata.data.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${speed} Km/h </span><br>
+												<span style="font-size: 14px;">${datadate}</span>`;
+						
+						vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HOficina; ?> </span> <br>
+													  <span style="font-size: 12px;"> <?php echo $Max06HOficinaDate; ?></span>`;
+						vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HOficina; ?> </span> <br>
+													 <span style="font-size: 12px;"> <?php echo $Max12HOficinaDate; ?> </span>`;
+						vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HOficina; ?> </span> <br>
+													   <span style="font-size: 12px;"> <?php echo $Max24HOficinaDate; ?> </span>`;
                   }
-                  else{
-                    vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HGrua; ?> </span> <br>
-                                                  <span style="font-size: 12px;"> <?php echo $Max06HGruaDate; ?></span>`;
-                    vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HGrua; ?> </span> <br>
-                                                 <span style="font-size: 12px;"> <?php echo $Max12HGruaDate; ?> </span>`;
-                    vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HGrua; ?> </span> <br>
-                                                   <span style="font-size: 12px;"> <?php echo $Max24HGruaDate; ?> </span>`;
+                  else if (haizea_name == "Portainer08") {
+						let vdata = weatherData[1];
+						$("#arrowdir2").css({ transform: 'rotate(' + angle + 'deg)' });
+						var imgElement = document.getElementById('arrowdir2');
+						imgElement.src = arrowImage ;
+						
+						var newRotationAngle = angle + 'deg';
+						imgElement.style.transform = 'rotate(' + newRotationAngle + ')';
+						
+						vdata.element.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${worig}</span> <br>
+												<span style="font-size: 10px;">${worigtext}</span>`;
+						vdata.data.innerHTML = `<span class="text-center" style="font-size: 24px;"> ${speed} Km/h </span><br>
+												<span style="font-size: 14px;">${datadate}</span>`;
+						
+						vdata.footer1.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 06H:</span> <span style="font-size: 12px;"> <?php echo $Max06HGrua; ?> </span> <br>
+													  <span style="font-size: 12px;"> <?php echo $Max06HGruaDate; ?></span>`;
+						vdata.footer2.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 12H:</span> <span style="font-size: 12px;"> <?php echo $Max12HGrua; ?> </span> <br>
+													 <span style="font-size: 12px;"> <?php echo $Max12HGruaDate; ?> </span>`;
+						vdata.footer3.innerHTML =`<span class="text-left" style="font-size: 12px;">Mx 24H:</span> <span style="font-size: 12px;"> <?php echo $Max24HGrua; ?> </span> <br>
+													   <span style="font-size: 12px;"> <?php echo $Max24HGruaDate; ?> </span>`;
                   }
-
 
                 } else {
                   vdata.data.innerHTML = `Error in Data`;
@@ -397,7 +448,7 @@
               });
         }
 
-        function setUpdateValue(value)
+        function sebtUpdateValue(value)
         {
             enableUpdate = value;
             console.log ("Update value set to: " + enableUpdate.toString());
@@ -407,12 +458,15 @@
           var ip = "<?php echo $BX_alldevicedata[0][1]; ?>";
           const aizeaw01grua = "http://" + ip +":19099/api/v1/vaisaladata";
           console.log ("URL1:" + aizeaw01grua);
-          fetchDataAndDisplay(aizeaw01grua,1);
-
+          fetchDataAndDisplay(aizeaw01grua,1,"<?php echo $BX_alldevicedata[0][0]; ?>");
+		  //fetchDataAndDisplay(aizeaw01grua,1);
+		  	
           ip = "<?php echo $BX_alldevicedata[1][1]; ?>";
           const aizeaw02grua = "http://" + ip +":19099/api/v1/vaisaladata";
           console.log ("URL1:" + aizeaw02grua);
-          fetchDataAndDisplay(aizeaw02grua,2);
+          fetchDataAndDisplay(aizeaw02grua,2,"<?php echo $BX_alldevicedata[1][0]; ?>");
+          //fetchDataAndDisplay(aizeaw02grua,2);
+          
           //const url = "http://localhost:19099/api/v1/vaisaladata";
           //fetchDataAndDisplay('http://62.99.51.59:19099/api/v1/vaisaladata');
         }

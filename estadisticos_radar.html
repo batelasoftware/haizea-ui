@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<script src="js/jquery.js" type="text/javascript"></script>
+  	<link rel="stylesheet"  href="css/estilos.css"/>
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body>
+<?php include 'php/data_qry.php'?>
+<div class="row">
+    <!-- Loop through four times to create four columns for radar charts -->
+    <?php for ($i = 0; $i < count($haizea_id); $i++) { ?>
+        <div class="col-lg-3">
+            <canvas class="spiderMaxChartCanvas" style="width: 350px; height: 350px;" id="spiderMaxChartCanvas<?= $i ?>"></canvas>
+        </div>
+    <?php } ?>
+</div>
+<div class="row">
+    <!-- Loop through four times to create four columns for histograms -->
+    <?php for ($i = 0; $i < count($haizea_id); $i++) { ?>
+        <div class="col-lg-3">
+             <canvas class="spiderAvgChartCanvas" style="width: 350px; height: 350px;" id="spiderAvgChartCanvas<?= $i ?>"></canvas>
+        </div>
+    <?php } ?>
+</div>
+
+<script>
+	
+	var haizea_ids = <?php echo json_encode($haizea_id);?>;
+	var haizea_names = <?php echo json_encode($haizea_names);?>;
+	var max_values = <?php echo json_encode($maxValuesTotals);?>;
+	var avg_values = <?php echo json_encode($avgValuesTotals);?>;
+    
+    var aizeaMaxChartData = [];
+    var aizeaAvgChartData = [];
+    
+    var aizeaMaxChartDataOptions = [];
+    var aizeaAvgChartDataOptions = [];
+    
+    var estadisticos = ["6h","12h","24h"];
+    const colorArray = ['rgba(139, 0, 139)','rgba(128, 128, 0)','rgba(255,140,0)','rgba(139, 0, 0)','rgba(10,130,180)','rgba(188,143,143','rgba(0128,0,0)','rgba(128,128,128'];
+	
+	for(var i = 0; i<haizea_ids.length; i++){	
+		var dataSetMaxData = [];
+		var dataSetAvgData = [];
+		
+		for(var j = 0; j <estadisticos.length; j++){
+			var dataMaxCode =
+			{
+				label: estadisticos[j],
+				data:  max_values[haizea_ids[i]][j],
+				borderColor: colorArray[j]
+				//backgroundColor: colorArray[j]	  
+			}
+			var dataAvgCode =
+			{
+				label: estadisticos[j],
+				data:  avg_values[haizea_ids[i]][j],
+				borderColor: colorArray[j]
+				//backgroundColor: colorArray[j]	  
+			}
+			dataSetMaxData.push(dataMaxCode);
+			dataSetAvgData.push(dataAvgCode);
+		}
+		   
+		var chartMaxData = {
+			labels: ['N', 'NE', 'E', 'SE', 'S','SO','0','NO'],
+			datasets:dataSetMaxData
+		};
+		var chartAvgData = {
+			labels: ['N', 'NE', 'E', 'SE', 'S','SO','0','NO'],
+			datasets:dataSetAvgData
+		};	
+		
+			
+		aizeaMaxChartData.push(chartMaxData);
+		aizeaAvgChartData.push(chartAvgData);
+		
+		var radarChartOptions = {
+			scale: {
+				ticks: {
+					min: 0,
+				}
+			},
+			title: {
+				display: true,
+				text: 'Máximos para: ' + haizea_names[haizea_ids[i]]
+			},
+			elements: {
+				line: {
+					fill: false // Disable fill for radar chart
+				}
+			}
+		};
+		aizeaMaxChartDataOptions.push (radarChartOptions);
+		
+		var radarChartOptions = {
+			scale: {
+				ticks: {
+					min: 0,
+				}
+			},
+			title: {
+				display: true,
+				text: 'Media para: ' + haizea_names[haizea_ids[i]]
+			},
+			elements: {
+				line: {
+					fill: false // Disable fill for radar chart
+				}
+			}
+		};
+		aizeaAvgChartDataOptions.push (radarChartOptions);
+	}
+    
+    
+    // Options for the radar charts
+    var radarChartOptions = {
+        scale: {
+            ticks: {
+                min: 0,
+            }
+        },
+        title: {
+            display: true,
+            text: 'My Radar Chart Title'
+        }
+    };
+
+    // Get the canvas elements where the charts will be rendered
+    var radarCanvasElements = document.getElementsByClassName('spiderMaxChartCanvas');
+    var spiderAvgChartCanvasElements = document.getElementsByClassName('spiderAvgChartCanvas');
+
+    // Create the radar charts
+    for (var i = 0; i < radarCanvasElements.length; i++) {
+        var ctx = radarCanvasElements[i].getContext('2d');
+        var spiderChart = new Chart(ctx, {
+            type: 'radar',
+            //data: radarChartData[i % radarChartData.length], // Use modulo to cycle through the data
+            data:aizeaMaxChartData[i],
+            options: aizeaMaxChartDataOptions[i],
+        });
+    }
+
+    // Create the histograms
+    for (var i = 0; i < spiderAvgChartCanvasElements.length; i++) {
+        var ctx = spiderAvgChartCanvasElements[i].getContext('2d');
+        var spiderChart = new Chart(ctx, {
+            type: 'radar',
+            data:aizeaAvgChartData[i],
+            options: aizeaAvgChartDataOptions[i],
+        });
+    }
+</script>
+
+
+</body>
+</html>
+																								

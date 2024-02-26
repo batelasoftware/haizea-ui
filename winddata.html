@@ -4,18 +4,7 @@
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   	<script src="js/jquery.js" type="text/javascript"></script>
   	<link rel="stylesheet"  href="css/estilos.css"/>
-
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-<!--
-    <script type="text/javascript" src="js/jquery.js" ></script>
-    <script type="text/javascript" src="js/script.js" ></script>
-    <script src="js/jquery.datetimepicker.full.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
-    <script src="js/sb-admin-2.min.js"></script>
-    <script src="js/chart.js/Chart.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
--->
 
   </head>
 
@@ -70,6 +59,20 @@
         labels: allDates,
         datasets: dataSetData
     };
+	
+	var chartOptions = {
+		scales: {
+             xAxes: [{
+				 type: "time",
+				time: {
+				  unit: "minute",
+				},
+				ticks: {
+					maxTicksLimit: 10
+				}
+			}]
+        }
+	};
 
     if (bx_update == "TRUE") {
       var labelElement = document.getElementById("livedataid");
@@ -77,6 +80,7 @@
 
       myLineChart.data = [];
       myLineChart.data = data;
+      myLineChart.options = chartOptions;
       myLineChart.update({
         duration: 0,
         easing: 'easeInOutExpo'
@@ -86,24 +90,13 @@
       var labelElement = document.getElementById("livedataid");
     // Make the label visible by setting its display property to "block"
       // labelElement.style.display = "block";
-
+		
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: data,
-        options: {
-          scales: {
-            x: {
-              type: 'time',
-              time :{
-                unit:'minute',
-                displayFormats: {
-                  minute: 'DD T'
-                }
-              }
-            }
-          }
-        }
+        options: chartOptions
       });
+		
       myLineChart.update({
         duration: 0,
         easing: 'easeInOutExpo'
