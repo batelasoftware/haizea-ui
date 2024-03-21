@@ -351,14 +351,17 @@
 	$Max06HOficina=$device_max_values["Oficina"][0];
 	$Max06HOficinaDate=$device_max_values["Oficina"][1];
 	$Max06HGrua=$device_max_values["Portainer08"][0];
+	$Max06HGruaDate=$device_max_values["Portainer08"][1];
 
 	$device_max_values = readMaxValues($path_db,12);
 	$Max12HOficina=$device_max_values["Oficina"][0];
 	$Max12HOficinaDate=$device_max_values["Oficina"][1];
 	$Max12HGrua=$device_max_values["Portainer08"][0];
+	$Max12HGruaDate=$device_max_values["Portainer08"][1];
 
 	$device_max_values = readMaxValues($path_db,24);
 	$Max24HOficina=$device_max_values["Oficina"][0];
 	$Max24HOficinaDate=$device_max_values["Oficina"][1];
 	$Max24HGrua=$device_max_values["Portainer08"][0];
+	$Max24HGruaDate=$device_max_values["Portainer08"][1];
 ?>

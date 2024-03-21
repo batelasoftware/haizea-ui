@@ -282,17 +282,22 @@
       </a>
       <!-- Page level custom scripts -->
       <script>
-         // var enableUpdate ;
-         // function autoRefresh (){
-         //   if (enableUpdate == true){
-         //      $('#windcaptops').load("windcaptops.html");
-         //   }
-         //
-         // }
+         
+         // Listen for messages from other windows
+	    window.addEventListener('message', function(event) {
+		  // Check if the origin of the message is from the same domain
+		  if (event.origin !== window.location.origin) return;
+		  
+		  // Check if the message is the one we're expecting
+		  if (event.data === 'reloadBHTML') {
+			$('#estadisticos').load("estadisticos_radar.html");
+		  }
+		});
+         
          function autoChartRefresh (){
            if (enableUpdate == true){
               $('#lineChartId').load("winddata.html");
-              $('#estadisticos').load("estadisticos_radar.html");
+              //$('#estadisticos').load("estadisticos_radar.html");
             }
          }
          //setInterval ('autoRefresh()',2000);

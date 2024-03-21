@@ -24,9 +24,18 @@
         </div>
     <?php } ?>
 </div>
-
+<div class="row">
+  <div class="col text-center">
+    <button id="reloadButton" class="btn btn-info" id="btnexp">Actualizar</button>
+  </div>
+</div>
 <script>
 	
+	// Add an event listener to the reload button
+    document.getElementById('reloadButton').addEventListener('click', function() {
+     window.parent.postMessage('reloadBHTML', '*');
+    });
+    
 	var haizea_ids = <?php echo json_encode($haizea_id);?>;
 	var haizea_names = <?php echo json_encode($haizea_names);?>;
 	var max_values = <?php echo json_encode($maxValuesTotals);?>;
